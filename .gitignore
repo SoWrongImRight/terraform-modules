@@ -1,0 +1,33 @@
+# Ignore Terraform state files (contains sensitive data)
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+
+# Ignore Terraform crash logs
+crash.log
+*.log
+
+# Ignore Terraform plan files (generated files)
+*.tfplan
+
+# Ignore Terraform lock file (not needed in Git)
+.terraform.lock.hcl
+
+# Ignore Terraform cache directory
+.terraform/
+
+# Ignore user-specific files
+*.tfvars
+*.auto.tfvars
+*.override.tf
+*_override.tf
+.DS_Store
+Thumbs.db
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore system files
+.idea/
+*.swp
