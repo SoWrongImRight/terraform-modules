@@ -5,7 +5,7 @@ resource "aws_launch_template" "this" {
   key_name = var.key_name
 
   vpc_security_group_ids = var.security_group_ids
-  user_data = base64encode(var.user_date)
+  user_data = base64encode(var.user_data)
 
   block_device_mappings {
     device_name = "/dev/xvda"
