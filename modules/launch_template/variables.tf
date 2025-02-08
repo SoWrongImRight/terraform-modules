@@ -15,6 +15,7 @@ variable "instance_type" {
 }
 
 variable "key_name" {
+  description = "Name of key pair to be used"
   type = string
   default = null
 }
