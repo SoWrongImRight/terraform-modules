@@ -5,6 +5,7 @@ locals {
     any_protocol = "-1"
     tcp_protocol = "tcp"
     all_ips = ["0.0.0.0/0"]
+    ssh = 22
 }
 
 resource "aws_security_group" "this" {
@@ -23,6 +24,16 @@ resource "aws_security_group_rule" "allow_http_inbound" {
   to_port = local.http_port
   protocol = local.tcp_protocol
   cidr_blocks = local.all_ips
+}
+
+resource "aws_security_group_rule" "ssh" {
+  type = "ingress"
+  security_group_id = aws_security_group.this.id
+
+  from_port = local.ssh
+  to_port = local.ssh
+  protocol = local.tcp_protocol
+  cidr_blocks = [var.my_ip]
 }
 
 resource "aws_security_group_rule" "allow_all_outbound" {
