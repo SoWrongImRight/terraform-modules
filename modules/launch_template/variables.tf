@@ -39,4 +39,6 @@ variable "volume_size" {
 
 variable "tags" {
   description = "Tags to apply to launch template"
+  type = map(string)
+  default = {}
 }
