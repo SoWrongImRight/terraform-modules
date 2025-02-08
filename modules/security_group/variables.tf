@@ -19,3 +19,8 @@ variable "tags" {
   type = map(string)
   default = {}
 }
+
+variable "my_ip" {
+  description = "My IP address for ssh connection"
+  type = string
+}
