@@ -25,7 +25,7 @@ variable "security_group_ids" {
   type = list(string)
 }
 
-variable "user_date" {
+variable "user_data" {
   description = "User data script for initialization"
   type = string
   default = ""
