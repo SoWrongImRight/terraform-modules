@@ -43,3 +43,8 @@ variable "tags" {
   type = map(string)
   default = {}
 }
+
+variable "target_group_arns" {
+  description = "ARN of target group"
+  type = list(string)
+}

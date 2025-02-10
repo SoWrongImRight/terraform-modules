@@ -6,6 +6,8 @@ resource "aws_autoscaling_group" "this" {
   health_check_type = "EC2"
   force_delete = var.force_delete
 
+  target_group_arns = var.target_group_arns
+
   launch_template {
     id = var.launch_template_id
     version = var.launch_template_version
