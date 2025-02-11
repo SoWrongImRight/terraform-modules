@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "this" {
   origin {
-    domain_name = aws_lb.this.dns_name
+    domain_name = var.alb_dns_name
     origin_id = "ALBOrigin"
 
     custom_origin_config {
