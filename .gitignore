@@ -31,3 +31,6 @@ Thumbs.db
 # Ignore system files
 .idea/
 *.swp
+
+# Added
+*.zip
