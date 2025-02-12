@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "allow_https_cloudfront" {
   from_port         = local.https_port
   to_port           = local.https_port
   protocol          = local.tcp_protocol
-  cidr_blocks       = data.aws_ip_ranges.cloudfront
+  cidr_blocks       = data.aws_ip_ranges.cloudfront.cidr_blocks
 }
 
 resource "aws_security_group_rule" "allow_all_outbound" {
