@@ -11,6 +11,8 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 
+  aliases = var.aliases
+
   enabled = true
   is_ipv6_enabled = true
   comment = "Cloudfront for ALB"
