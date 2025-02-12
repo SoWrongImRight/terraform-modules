@@ -21,3 +21,8 @@ variable "cloudfront_domain_name" {
   description = "Cloudfront domain name"
   type = string
 }
+
+variable "cloudfront_hosted_zone_id" {
+  description = "The cloufront hosted zone ID"
+  type = string
+}

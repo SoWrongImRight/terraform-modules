@@ -14,7 +14,7 @@ resource "aws_route53_record" "cloudfront" {
 
   alias {
     name                   = var.cloudfront_domain_name
-    zone_id                = var.route53_zone_id
+    zone_id                = var.cloudfront_hosted_zone_id
     evaluate_target_health = false
   }
 }
@@ -26,7 +26,7 @@ resource "aws_route53_record" "cloudfront_www" {
 
   alias {
     name                   = var.cloudfront_domain_name
-    zone_id                = var.route53_zone_id
+    zone_id                = var.cloudfront_hosted_zone_id
     evaluate_target_health = false
   }
 }
