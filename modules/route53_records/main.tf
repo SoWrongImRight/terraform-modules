@@ -1,5 +1,5 @@
 resource "aws_route53_record" "this" {
-  for_each = var.validation_record
+  for_each = var.validation_records
   zone_id = var.route53_zone_id
   name = each.value.name
   type = each.value.type
