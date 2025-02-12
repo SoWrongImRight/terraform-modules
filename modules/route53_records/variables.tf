@@ -11,3 +11,13 @@ variable "validation_records" {
     value = string
   }))
 }
+
+variable "domain_name" {
+  description = "The roote domain name"
+  type = string
+}
+
+variable "cloudfront_domain_name" {
+  description = "Cloudfront domain name"
+  type = string
+}
