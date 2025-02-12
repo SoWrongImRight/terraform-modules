@@ -6,23 +6,11 @@ locals {
     tcp_protocol = "tcp"
     all_ips = ["0.0.0.0/0"]
     ssh = 22
+}
 
-    cloudfront_ips = [
-      "13.32.0.0/15",
-      "13.35.0.0/16",
-      "13.54.63.128/26",
-      "13.59.250.0/26",
-      "52.46.0.0/18",
-      "52.84.0.0/15",
-      "54.182.0.0/16",
-      "54.192.0.0/16",
-      "54.230.0.0/16",
-      "54.239.128.0/18",
-      "204.246.164.0/22",
-      "204.246.168.0/22",
-      "204.246.174.0/23",
-      "204.246.176.0/20"
-    ]
+data "aws_ip_ranges" "cloudfront" {
+  services = [ "CLOUDFRONT" ]
+  regions = [ "global" ]
 }
 
 resource "aws_security_group" "this" {
@@ -49,7 +37,7 @@ resource "aws_security_group_rule" "allow_https_cloudfront" {
   from_port         = local.https_port
   to_port           = local.https_port
   protocol          = local.tcp_protocol
-  cidr_blocks       = local.cloudfront_ips 
+  cidr_blocks       = data.aws_ip_ranges.cloudfront
 }
 
 resource "aws_security_group_rule" "allow_all_outbound" {
