@@ -8,44 +8,36 @@ locals {
     ssh = 22
 }
 
-data "aws_ip_ranges" "cloudfront" {
-  services = [ "CLOUDFRONT" ]
-  regions = [ "global" ]
+data "aws_ec2_managed_prefix_list" "cloudfront" {
+  name = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
 resource "aws_security_group" "this" {
-  name = var.sg_name
+  name        = var.sg_name
   description = var.sg_description
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = local.http_port
+    to_port     = local.http_port
+    protocol    = local.tcp_protocol
+    cidr_blocks = local.all_ips
+  }
+
+  ingress {
+    from_port   = local.https_port
+    to_port     = local.https_port
+    protocol    = local.tcp_protocol
+    prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]  # ✅ Use prefix list here
+  }
+
+  egress {
+    from_port   = local.any_port
+    to_port     = local.any_port
+    protocol    = local.any_protocol
+    cidr_blocks = local.all_ips
+  }
 
   tags = var.tags
 }
 
-resource "aws_security_group_rule" "allow_http_inbound" {
-  type = "ingress"
-  security_group_id = aws_security_group.this.id
-
-  from_port = local.http_port
-  to_port = local.http_port
-  protocol = local.tcp_protocol
-  cidr_blocks = local.all_ips
-}
-
-resource "aws_security_group_rule" "allow_https_cloudfront" {
-  type              = "ingress"
-  security_group_id = aws_security_group.this.id
-  from_port         = local.https_port
-  to_port           = local.https_port
-  protocol          = local.tcp_protocol
-  cidr_blocks       = data.aws_ip_ranges.cloudfront.cidr_blocks
-}
-
-resource "aws_security_group_rule" "allow_all_outbound" {
-  type = "egress"
-  security_group_id = aws_security_group.this.id
-
-  from_port = local.any_port
-  to_port = local.any_port
-  protocol = local.any_protocol
-  cidr_blocks = local.all_ips
-}
