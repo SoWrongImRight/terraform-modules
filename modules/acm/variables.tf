@@ -13,3 +13,9 @@ variable "san_list" {
   type        = list(string)
   default     = []
 }
+
+variable "alternate_domain_names" {
+  description = "Additional domians for ACM certificate"
+  type = list(string)
+  default = []
+}
