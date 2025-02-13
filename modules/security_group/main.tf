@@ -1,43 +1,28 @@
-locals {
-    http_port = 80
-    https_port = 443
-    any_port = 0
-    any_protocol = "-1"
-    tcp_protocol = "tcp"
-    all_ips = ["0.0.0.0/0"]
-    ssh = 22
-}
-
-data "aws_ec2_managed_prefix_list" "cloudfront" {
-  name = "com.amazonaws.global.cloudfront.origin-facing"
-}
-
 resource "aws_security_group" "this" {
   name        = var.sg_name
   description = var.sg_description
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = local.http_port
-    to_port     = local.http_port
-    protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      from_port   = ingress.value["from_port"]
+      to_port     = ingress.value["to_port"]
+      protocol    = ingress.value["protocol"]
+      cidr_blocks = lookup(ingress.value, "cidr_blocks", null)
+      prefix_list_ids = lookup(ingress.value, "prefix_list_ids", null)
+    }
   }
 
-  ingress {
-    from_port   = local.https_port
-    to_port     = local.https_port
-    protocol    = local.tcp_protocol
-    prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]  # ✅ Use prefix list here
-  }
-
-  egress {
-    from_port   = local.any_port
-    to_port     = local.any_port
-    protocol    = local.any_protocol
-    cidr_blocks = local.all_ips
+  dynamic "egress" {
+    for_each = var.egress_rules
+    content {
+      from_port   = egress.value["from_port"]
+      to_port     = egress.value["to_port"]
+      protocol    = egress.value["protocol"]
+      cidr_blocks = lookup(egress.value, "cidr_blocks", null)
+    }
   }
 
   tags = var.tags
 }
-
