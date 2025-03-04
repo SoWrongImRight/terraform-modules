@@ -16,7 +16,7 @@ resource "aws_fis_experiment_template" "terminate_instances" {
   target {
     name           = "target-instances"
     resource_type  = "aws:ec2:instance"
-    selection_mode = "COUNT(*50%)"
+    selection_mode = "PERCENT(50)"
 
     filter {
       path   = "tags.${var.tag_key}"
