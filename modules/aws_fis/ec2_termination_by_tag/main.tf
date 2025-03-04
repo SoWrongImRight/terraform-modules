@@ -11,6 +11,11 @@ resource "aws_fis_experiment_template" "terminate_instances" {
     name      = "terminate-instances"
     action_id = "aws:ec2:terminate-instances"
 
+    target {
+      key = "Instances"
+      value = "target-instances"
+    }
+
   }
 
   target {
@@ -18,9 +23,9 @@ resource "aws_fis_experiment_template" "terminate_instances" {
     resource_type  = "aws:ec2:instance"
     selection_mode = "PERCENT(50)"
 
-    filter {
-      path   = "tags.${var.tag_key}"
-      values = [var.tag_value]
+    resource_tag {
+      key = "${var.tag_key}"
+      value = "${var.tag_value}"
     }
   }
 }
