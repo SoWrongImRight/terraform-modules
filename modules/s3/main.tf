@@ -3,7 +3,7 @@ resource "random_id" "suffix" {
 }
 
 resource "aws_s3_bucket" "this" {
-    bucket  = "${var.prefix_name}-${random_id.suffix}"
+    bucket  = "${var.prefix_name}-${random_id.suffix.hex}"
     force_destroy = var.force_destroy
     tags = var.tags
 }
