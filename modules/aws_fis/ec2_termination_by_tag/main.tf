@@ -28,4 +28,26 @@ resource "aws_fis_experiment_template" "terminate_instances" {
       value = "${var.tag_value}"
     }
   }
+
+  dynamic "experiment_report_configuration" {
+    for_each = var.enable_experiment_report ? [1] : []
+    content {
+      data sources {
+        cloudwatch_dashboard {
+          dashboard_arn = var.report_dashboard_arn
+        }
+      }
+
+      outputs {
+        s3_configuration {
+          bucket_name = var.report_s3_bucket_name
+          prefix = "fis-terminate-isntances-50"
+        }
+      }
+
+      pre_experiment_duration = "PT5M"
+      post_experiment_duration = "PT5M"
+    }
+  }
+
 }
