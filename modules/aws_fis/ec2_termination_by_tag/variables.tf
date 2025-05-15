@@ -34,5 +34,5 @@ variable "report_s3_bucket_name" {
 variable "report_dashboard_arn" {
   description = "Cloudwatch dashboard ARN for FIS experiment" 
   type = string
-  default = nullß
+  default = null
 }
