@@ -1,14 +1,6 @@
-locals {
-  valid_dashboard_arn = (
-    var.report_dashboard_arn != null &&
-    var.report_dashboard_arn != ""
-  )
-}
-
 resource "aws_fis_experiment_template" "terminate_instances" {
   description = "Terminate half of all instances tagged with ${var.tag_key}=${var.tag_value}"
-
-  role_arn = var.fis_role_arn
+  role_arn    = var.fis_role_arn
 
   stop_condition {
     source = "none"
@@ -19,10 +11,9 @@ resource "aws_fis_experiment_template" "terminate_instances" {
     action_id = "aws:ec2:terminate-instances"
 
     target {
-      key = "Instances"
+      key   = "Instances"
       value = "target-instances"
     }
-
   }
 
   target {
@@ -31,22 +22,16 @@ resource "aws_fis_experiment_template" "terminate_instances" {
     selection_mode = "PERCENT(50)"
 
     resource_tag {
-      key = "${var.tag_key}"
-      value = "${var.tag_value}"
+      key   = var.tag_key
+      value = var.tag_value
     }
   }
 
   dynamic "experiment_report_configuration" {
     for_each = var.enable_experiment_report ? [1] : []
-      dynamic "data_sources" {
-        for_each = local.valid_dashboard_arn ? [1] : []
-        content {
-          cloudwatch_dashboard {
-            dashboard_arn = var.report_dashboard_arn
-          }
-        }
-      
-
+    content {
+      pre_experiment_duration  = "PT5M"
+      post_experiment_duration = "PT5M"
 
       outputs {
         s3_configuration {
@@ -55,8 +40,17 @@ resource "aws_fis_experiment_template" "terminate_instances" {
         }
       }
 
-      pre_experiment_duration  = "PT5M"
-      post_experiment_duration = "PT5M"
+      # ✅ Include data_sources block only when dashboard ARN is valid
+      # ❗ Cannot be dynamic — must be hardcoded and conditionally rendered
+      # So we use a full block, but only populate it when the ARN is valid
+      dynamic "data_sources" {
+        for_each = local.valid_dashboard_arn ? [1] : []
+        content {
+          cloudwatch_dashboard {
+            dashboard_arn = var.report_dashboard_arn
+          }
+        }
+      }
     }
   }
 }
