@@ -45,7 +45,7 @@ resource "aws_fis_experiment_template" "terminate_instances" {
             dashboard_arn = var.report_dashboard_arn
           }
         }
-      }
+      
 
 
       outputs {
@@ -59,4 +59,4 @@ resource "aws_fis_experiment_template" "terminate_instances" {
       post_experiment_duration = "PT5M"
     }
   }
-
+}
