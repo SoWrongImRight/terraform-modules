@@ -33,7 +33,8 @@ resource "aws_fis_experiment_template" "terminate_instances" {
     for_each = var.enable_experiment_report ? [1] : []
     content {
       dynamic "data_sources" {
-        for_each = var.report_dashboard_arn != null && trim(var.report_dashboard_arn) != "" ? [1] : []
+        for_each = var.report_dashboard_arn != null && trim(var.report_dashboard_arn, " ") != "" ? [1] : []
+
 
 
 
