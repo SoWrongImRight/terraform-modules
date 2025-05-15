@@ -30,9 +30,3 @@ variable "report_s3_bucket_name" {
   type = string
   default = null
 }
-
-variable "report_dashboard_arn" {
-  description = "Cloudwatch dashboard ARN for FIS experiment" 
-  type = string
-  default = null
-}

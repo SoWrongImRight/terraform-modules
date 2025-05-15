@@ -30,25 +30,10 @@ resource "aws_fis_experiment_template" "terminate_instances" {
   dynamic "experiment_report_configuration" {
     for_each = var.enable_experiment_report ? [1] : []
     content {
-      pre_experiment_duration  = "PT5M"
-      post_experiment_duration = "PT5M"
-
       outputs {
         s3_configuration {
           bucket_name = var.report_s3_bucket_name
           prefix      = "fis-terminate-instances-50"
-        }
-      }
-
-      # ✅ Include data_sources block only when dashboard ARN is valid
-      # ❗ Cannot be dynamic — must be hardcoded and conditionally rendered
-      # So we use a full block, but only populate it when the ARN is valid
-      dynamic "data_sources" {
-        for_each = local.valid_dashboard_arn ? [1] : []
-        content {
-          cloudwatch_dashboard {
-            dashboard_arn = var.report_dashboard_arn
-          }
         }
       }
     }
