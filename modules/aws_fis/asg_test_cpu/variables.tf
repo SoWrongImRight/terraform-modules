@@ -1,29 +1,40 @@
-variable "asg_name" {
-  description = "Name of the Auto Scaling Group to target"
+variable "fis_role_arn" {
+  description = "The IAM role ARN that FIS assumes"
   type        = string
 }
 
-variable "fis_role_arn" {
-  description = "IAM role ARN for FIS to assume"
+variable "ssm_document" {
+  description = "The SSM document to run"
   type        = string
+  default     = "AWS-RunShellScript"
 }
 
 variable "tag_key" {
-  default = "Experiment"
-  type    = string
+  description = "Tag key used to select EC2 targets"
+  type        = string
+  default     = "Experiment"
 }
 
 variable "tag_value" {
-  default = "ready"
-  type    = string
+  description = "Tag value used to select EC2 targets"
+  type        = string
+  default     = "ready"
 }
 
-variable "enable_report" {
-  type    = bool
-  default = false
+variable "stress_command" {
+  description = "Shell command to stress the CPU"
+  type        = string
+  default     = "sudo yum install -y stress || sudo apt-get install -y stress; stress --cpu 2 --timeout 120"
 }
 
-variable "report_s3_bucket" {
-  type    = string
-  default = null
+variable "duration" {
+  description = "Duration of the experiment"
+  type        = string
+  default     = "PT2M"
+}
+
+variable "selection_mode" {
+  description = "How many instances to select (e.g. PERCENT(50), COUNT(1))"
+  type        = string
+  default     = "PERCENT(50)"
 }
