@@ -1,5 +1,8 @@
 locals {
-  valid_dashboard_arn = can(trim(var.report_dashboard_arn, " ")) && trim(var.report_dashboard_arn, " ") != ""
+  valid_dashboard_arn = (
+    var.report_dashboard_arn != null &&
+    var.report_dashboard_arn != ""
+  )
 }
 
 resource "aws_fis_experiment_template" "terminate_instances" {
@@ -35,7 +38,6 @@ resource "aws_fis_experiment_template" "terminate_instances" {
 
   dynamic "experiment_report_configuration" {
     for_each = var.enable_experiment_report ? [1] : []
-    content {
       dynamic "data_sources" {
         for_each = local.valid_dashboard_arn ? [1] : []
         content {
@@ -44,6 +46,7 @@ resource "aws_fis_experiment_template" "terminate_instances" {
           }
         }
       }
+
 
       outputs {
         s3_configuration {
