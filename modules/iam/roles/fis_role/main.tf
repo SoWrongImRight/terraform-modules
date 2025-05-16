@@ -29,7 +29,9 @@ data "aws_iam_policy_document" "fis_permissions" {
       actions = [
         "ssm:SendCommand",
         "ssm:DescribeInstanceInformation",
-        "ssm:GetCommandInvocation"
+        "ssm:GetCommandInvocation",
+        "ssm:ListCommandInvocations",
+        "ssm:ListCommands"
       ]
       resources = ["*"]
     }
