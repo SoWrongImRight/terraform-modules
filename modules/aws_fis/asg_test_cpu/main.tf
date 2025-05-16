@@ -52,7 +52,7 @@ resource "aws_fis_experiment_template" "cpu_stress" {
       outputs {
         s3_configuration {
           bucket_name = var.report_s3_bucket_name
-          prefix      = "fis-terminate-instances-50"
+          prefix      = "asg-stress-cpuß"
         }
       }
     }
