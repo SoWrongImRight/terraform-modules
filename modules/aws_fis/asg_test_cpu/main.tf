@@ -45,4 +45,16 @@ resource "aws_fis_experiment_template" "cpu_stress" {
       value = var.duration
     }
   }
+
+  dynamic "experiment_report_configuration" {
+    for_each = var.enable_experiment_report ? [1] : []
+    content {
+      outputs {
+        s3_configuration {
+          bucket_name = var.report_s3_bucket_name
+          prefix      = "fis-terminate-instances-50"
+        }
+      }
+    }
+  }
 }

@@ -38,3 +38,16 @@ variable "selection_mode" {
   type        = string
   default     = "PERCENT(50)"
 }
+
+
+variable "enable_experiment_report" {
+  description = "Enable experiment report configuratiohn"
+  type = bool
+  default = false
+}
+
+variable "report_s3_bucket_name" {
+  description = "S3 bucket name for FIS reports"
+  type = string
+  default = null
+}
