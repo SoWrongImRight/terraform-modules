@@ -19,15 +19,3 @@ variable "target_value" {
   description = "The target value for the metric"
   default     = 60
 }
-
-variable "cooldown" {
-  type        = number
-  default     = 300
-  description = "Cooldown period in seconds"
-}
-
-variable "estimated_instance_warmup" {
-  type        = number
-  default     = 120
-  description = "Time to wait for an instance to become healthy"
-}
