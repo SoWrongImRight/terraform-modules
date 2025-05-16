@@ -24,7 +24,7 @@ variable "tag_value" {
 variable "stress_command" {
   description = "Shell command to stress the CPU"
   type        = string
-  default     = "sudo yum install -y stress || sudo apt-get install -y stress; stress --cpu 2 --timeout 120"
+  default     = "if command -v apt >/dev/null; then sudo apt-get update && sudo apt-get install -y stress; elif command -v yum >/dev/null; then sudo yum install -y stress; else echo 'unsupported OS'; fi; stress --cpu 2 --timeout 120"
 }
 
 variable "duration" {
