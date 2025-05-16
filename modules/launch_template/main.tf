@@ -15,6 +15,13 @@ resource "aws_launch_template" "this" {
     }
   }
 
+  dynamic "iam_instance_profile" {
+    for_each = var.iam_instance_profile_name != null ? [1] : []
+    content {
+      name = var.iam_instance_profile_name
+    }
+  }
+
   tag_specifications {
     resource_type = "instance"
     tags = var.tags
